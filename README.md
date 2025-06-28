@@ -2,7 +2,9 @@
 Intelligent pricing powered by learning, not guesswork.
 
 Neuro refers ---> Refers to neural networks, adaptive learning, and brain-inspired intelligence
+
 price----> Your core function—optimizing ticket prices
+
 X ---> Denotes innovation, experimentation,
 
 🗺️# Project Overview
