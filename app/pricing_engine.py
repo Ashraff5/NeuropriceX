@@ -1,4 +1,10 @@
 import pandas as pd
+import csv
+from datetime import datetime
+import os
+
+# Make sure logs folder exists
+os.makedirs("logs", exist_ok=True)
 
 # Load data at module level
 events = pd.read_csv("data/events.csv")
@@ -36,17 +42,45 @@ def get_dynamic_price(data):
     loyalty_boost = 1 + (loyalty / 100)
 
     final_price = base_price * tier_multiplier * (1 + urgency) * demand_factor * loyalty_boost
-
-    return {
-    "predicted_price": round(final_price, 2),
-    "explanation": (
+    # Define the explanation BEFORE logging or returning
+    explanation = (
         f"Price increased due to {seat_tier} seat, "
         f"{'high' if demand > 0.6 else 'moderate'} demand, "
         f"{'low' if time_to_event < 3 else 'medium'} time remaining, "
         f"and user loyalty score of {loyalty}."
-    )
+)
+# Log the prediction before returning
+    log_entry = {
+        "timestamp": datetime.now().isoformat(),
+        "event_id": event_id,
+        "user_id": user_id,
+        "time_to_event": time_to_event,
+        "seat_tier": seat_tier,
+        "historical_demand": demand,
+        "loyalty_score": loyalty,
+        "predicted_price": round(final_price, 2),
+        "explanation": explanation
 }
 
+    log_file = "logs/predictions.csv"
+    with open(log_file, mode="a", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=log_entry.keys())
+        if os.stat(log_file).st_size == 0:
+            writer.writeheader()
+        writer.writerow(log_entry)
+    # Return the prediction and explanation
+    print("Logged prediction to", log_file)
+    return {
+         "predicted_price": round(final_price, 2),
+        "explanation": explanation
+}
+
+
+
+
+   
+
+   
     
 
 
