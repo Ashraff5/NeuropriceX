@@ -4,6 +4,7 @@ import streamlit as st
 import requests
 import pandas as pd
 import altair as alt
+df = pd.DataFrame()  # Safe fallback to avoid NameError
 
 st.set_page_config(page_title="NeuroPriceX Dashboard", layout="wide")
 st.title("🎟️ NeuroPriceX — Smart Ticket Pricing")
@@ -78,3 +79,4 @@ if not df.empty:
     st.altair_chart(chart)
 else:
     st.write("No log data available for chart.")
+    
