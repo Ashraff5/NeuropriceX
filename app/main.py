@@ -8,6 +8,5 @@ def root():
     return {"message": "NeuroPriceX API is live 🚀"}
 
 @app.post("/predict")
-def predict_price(request_data: dict):
-    price = get_dynamic_price(request_data)
-    return {"predicted_price": price}
+def predict_price(data: dict):
+    return get_dynamic_price(data)
