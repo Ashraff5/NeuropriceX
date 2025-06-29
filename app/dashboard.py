@@ -48,7 +48,7 @@ if submitted:
 st.subheader("📜 Recent Predictions Log")
 
 try:
-    params = {"limit": 20}
+    params: dict[str, str | int] = {"limit": 20}
     if selected_user:
         params["user_id"] = selected_user
     if selected_event:
