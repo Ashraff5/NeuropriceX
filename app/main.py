@@ -61,3 +61,6 @@ def get_prediction_history(
 
     df = df.sort_values("timestamp", ascending=False).head(limit)
     return JSONResponse(content=df.to_dict(orient="records"))
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
