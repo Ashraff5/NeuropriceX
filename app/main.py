@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from app.pricing_engine import get_dynamic_price
+from pricing_engine import get_dynamic_price
 
 app = FastAPI()
 
