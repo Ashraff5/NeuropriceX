@@ -1,8 +1,11 @@
+from db import init_db, PredictionLog, SessionLocal
 from fastapi import FastAPI
 from pydantic import BaseModel
 from pricing_engine import get_dynamic_price
 
 app = FastAPI()
+from db import init_db
+init_db()
 
 # ✅ Input schema using Pydantic
 class PredictionRequest(BaseModel):

@@ -36,11 +36,13 @@ if submitted:
         "historical_demand": historical_demand,
     }
     try:
-        res = requests.post("http://localhost:8000/predict", json=payload).json()
+        API_URL = "https://neuropricex.onrender.com/predict"
+        res = requests.post(API_URL, json=payload).json()
+    
         st.success(f"💰 Predicted Price: ₹{res['predicted_price']}")
         st.info(f"🧠 Explanation: {res['explanation']}")
     except Exception as e:
-        st.error(f"Prediction failed: {e}")
+         st.error(f"Prediction failed: {e}")
 
 # ------------------------------
 # Recent Logs Table 📜
@@ -58,7 +60,7 @@ try:
     df = pd.DataFrame(logs)
     st.dataframe(df)
 except Exception as e:
-    st.warning("Couldn’t load history. Is the server running?")
+    st.warning("Couldn't load history. Is the server running?")
 
 # ------------------------------
 # Price by Seat Tier Chart 📈
