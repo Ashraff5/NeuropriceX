@@ -7,6 +7,18 @@ app = FastAPI()
 from db import init_db
 init_db()
 
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Or specify your frontend URL for tighter security
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # ✅ Input schema using Pydantic
 class PredictionRequest(BaseModel):
     event_id: str

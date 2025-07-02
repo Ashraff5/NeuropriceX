@@ -48,19 +48,28 @@ if submitted:
 # Recent Logs Table 📜
 # ------------------------------
 st.subheader("📜 Recent Predictions Log")
+from typing import Dict, Union
+
+params: Dict[str, Union[str, int]] = {"limit": 20}
 
 try:
-    params: dict[str, str | int] = {"limit": 20}
+    
     if selected_user:
         params["user_id"] = selected_user
     if selected_event:
         params["event_id"] = selected_event
 
-    logs = requests.get("http://localhost:8000/history", params=params).json()
-    df = pd.DataFrame(logs)
-    st.dataframe(df)
+    response = requests.get("https://neuropricex.onrender.com/history", params=params)
+    response.raise_for_status()  # Raises HTTPError for bad responses
+    logs = response.json()
+
+    if isinstance(logs, list) and logs:
+        df = pd.DataFrame(logs)
+        st.dataframe(df)
+    else:
+        st.info("🗃️ No logs found for the current filter.")
 except Exception as e:
-    st.warning("Couldn't load history. Is the server running?")
+    st.warning(f"Couldn't load history: {e}")
 
 # ------------------------------
 # Price by Seat Tier Chart 📈
@@ -68,17 +77,20 @@ except Exception as e:
 st.subheader("📊 Price by Tier (from recent history)")
 
 if not df.empty:
-    chart = (
-        alt.Chart(df)
-        .mark_bar()
-        .encode(
-            x=alt.X("seat_tier:N", title="Seat Tier"),
-            y=alt.Y("predicted_price:Q", aggregate="mean", title="Avg Predicted Price"),
-            tooltip=["seat_tier", "predicted_price"]
+    try:
+        chart = (
+            alt.Chart(df)
+            .mark_bar()
+            .encode(
+                x=alt.X("seat_tier:N", title="Seat Tier"),
+                y=alt.Y("predicted_price:Q", aggregate="mean", title="Avg Predicted Price"),
+                tooltip=["seat_tier", "predicted_price"]
+            )
+            .properties(width=600, height=400)
         )
-        .properties(width=600, height=400)
-    )
-    st.altair_chart(chart)
+        st.altair_chart(chart)
+    except Exception as e:
+        st.warning(f"Couldn’t render chart: {e}")
 else:
-    st.write("No log data available for chart.")
+    st.info("No log data available for chart.")
     
