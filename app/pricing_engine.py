@@ -6,9 +6,17 @@ import os
 # Make sure logs folder exists
 os.makedirs("logs", exist_ok=True)
 
-# Load data at module level
-events = pd.read_csv("data/events.csv")
-users = pd.read_csv("data/users.csv")
+import os
+import pandas as pd
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+events_path = os.path.join(BASE_DIR, "data", "events.csv")
+users_path = os.path.join(BASE_DIR, "data", "users.csv")
+
+events = pd.read_csv(events_path)
+users = pd.read_csv(users_path)
+
 
 def get_dynamic_price(data):
     event_id = data["event_id"]
