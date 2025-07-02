@@ -18,3 +18,5 @@ timestamp,event_id,user_id,time_to_event,seat_tier,historical_demand,loyalty_sco
 2025-06-29T15:36:12.002342,E101,U001,1,Regular,0.6,85,5158.06,"Price increased due to Regular seat, moderate demand, low time remaining, and user loyalty score of 85."
 2025-06-29T16:05:46.492607,E101,U001,3,Regular,0.85,85,4645.03,"Price increased due to Regular seat, high demand, medium time remaining, and user loyalty score of 85."
 2025-06-29T16:05:50.767377,E101,U001,3,Regular,0.35,85,3951.74,"Price increased due to Regular seat, moderate demand, medium time remaining, and user loyalty score of 85."
+2025-07-02T11:15:31.174545,E101,U001,13,Regular,0.2,85,3208.93,"Price increased due to Regular seat, moderate demand, medium time remaining, and user loyalty score of 85."
+2025-07-02T11:15:38.514730,E101,U001,13,Regular,0.55,85,3624.9,"Price increased due to Regular seat, moderate demand, medium time remaining, and user loyalty score of 85."
