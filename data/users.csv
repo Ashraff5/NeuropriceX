@@ -1,6 +1,0 @@
-user_id,loyalty_score,purchase_history,user_segment
-U001,85,5,premium
-U002,40,1,regular
-U003,70,3,frequent
-U004,95,12,elite
-U005,20,0,new
