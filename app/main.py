@@ -53,29 +53,41 @@ import pandas as pd
 import os
 from typing import Optional
 
+from sqlalchemy.orm import Session
+from fastapi import Depends
 
-@app.get("/history")
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 @app.get("/history")
 def get_prediction_history(
-    limit: int = 20,
+    limit: int = 100,
     user_id: Optional[str] = None,
-    event_id: Optional[str] = None
+    event_id: Optional[str] = None,
+    db: Session = Depends(get_db)
 ):
+    query = db.query(PredictionLog)
 
-    log_file = "logs/predictions.csv"
-    if not os.path.exists(log_file):
-        return {"message": "📭 No predictions have been logged yet."}
-    
-    df = pd.read_csv(log_file)
+    if user_id:
+        query = query.filter(PredictionLog.user_id == user_id)
+    if event_id:
+        query = query.filter(PredictionLog.event_id == event_id)
+
+    logs = query.order_by(PredictionLog.timestamp.desc()).limit(limit).all()
+    results = [log.__dict__ for log in logs]
+
+    for r in results:
+        r.pop("_sa_instance_state", None)
+
+    return results
+
     
     # Apply optional filters
-    if user_id:
-        df = df[df["user_id"] == user_id]
-    if event_id:
-        df = df[df["event_id"] == event_id]
-
-    df = df.sort_values("timestamp", ascending=False).head(limit)
-    return JSONResponse(content=df.to_dict(orient="records"))
+           
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000)

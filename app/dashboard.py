@@ -50,7 +50,7 @@ if submitted:
 st.subheader("📜 Recent Predictions Log")
 from typing import Dict, Union
 
-params: Dict[str, Union[str, int]] = {"limit": 20}
+params: Dict[str, Union[str, int]] = {"limit": 100}
 
 try:
     
